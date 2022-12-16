@@ -74,9 +74,12 @@ font-weight: bold;
 line-height: 15px;
 text-align: center;
 h1{
-    color: #ffd42a;
+    color: #4a3aff;
 }
 font-family: 'Fredoka One', cursive;
+@media screen and (min-width: 1000px ){
+line-height: 30px; 
+}
 `
 const ContentWrappler = styled.div`
 margin: 10px 0 10px 0;

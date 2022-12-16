@@ -110,6 +110,7 @@ const CardWrappler = styled.div`
 interface Props {
   clicked: boolean;
 }
+
 const Gamecard = styled.div<Props>`
   width: 100%;
   height: 100%;

@@ -1,8 +1,6 @@
 import styled from "styled-components";
 import GameHeader from "../components/GameHeader";
-import { useState } from "react";
 import Cards from "../components/Cards";
-
 export default function Game() {
   return (
     <Background>

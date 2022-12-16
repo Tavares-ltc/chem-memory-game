@@ -6,7 +6,7 @@ export type CardData = {
 }
 
 export function generateSortedCards() {
-    const cards = [
+    let  cards = [
         {
           imgSrc: "/organic-groups/Acido-carboxilico.png",
           functionName: "Ácido carboxílico", flipped: false
@@ -24,13 +24,22 @@ export function generateSortedCards() {
         { imgSrc: "/organic-groups/Eter.png", functionName: "Éter", flipped: false },
       ];
 
-      const sortedCards = cards.sort(()=> Math.random() -0.5)
-      const selectedCards = sortedCards.slice(0, 6)
-      const duplicatedCards = selectedCards.concat(selectedCards)
-      const sortedDuplicatedCards = duplicatedCards.sort(()=> Math.random() -0.5)
-      return createId(sortedDuplicatedCards)
+      const sortedCards = random(cards)
+      const duplicatedCards = sortedCards.concat(sortedCards)
+      return createId(duplicatedCards)
 }
-
+function random (arr: Omit<CardData, "id">[]) {
+  const resp: any = []
+  let hashtable: any = {}
+  while(resp.length < 6) {
+    const number = Math.floor(Math.random() * arr.length)
+    if(!hashtable[number]){
+      hashtable[number] = true;
+      resp.push(arr[number])
+    }
+  }
+  return resp
+}
 
 function createId(array: Omit<CardData, "id">[]) : CardData[]  {
 return array.map((object, index)=> ({...object, id: index}) )
