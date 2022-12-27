@@ -1,16 +1,19 @@
-import Menu from './pages/Menu';
+import Menu from "./pages/Menu";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Game from './pages/Game';
-
+import Game from "./pages/Game";
+import { GameContextProvider } from "./components/GameContextProvider";
 function App() {
+
+
   return (
     <BrowserRouter>
-            <Routes>
-              <Route path="/" element={ <Menu/>} />
-              <Route path="/game" element={ <Game/>} />
-            </Routes>
+    <GameContextProvider>
+      <Routes>
+          <Route path="/" element={<Menu />} />
+          <Route path="/game" element={<Game />} />
+      </Routes>
+    </GameContextProvider>
     </BrowserRouter>
-  
   );
 }
 

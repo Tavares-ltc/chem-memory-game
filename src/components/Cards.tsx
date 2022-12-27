@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import Backcard from "./Backcard";
 import Frontcard from "./Frontcard";
 import { CardData, generateSortedCards } from "../untils/cardsData";
+import { GameContext } from "../common/GameContext";
 
 
 export default function Cards() {
@@ -12,6 +13,8 @@ export default function Cards() {
   const [cards, setCards] = useState(() => {
     return generateSortedCards();
   });
+  const {moves, setMoves} = useContext(GameContext)
+
 
   return (
     <>
@@ -36,6 +39,7 @@ export default function Cards() {
       setDisableClick(true);
       flipCard(card);
       secondChoosedCard.current = card
+      setMoves(moves + 1)
     }
     if ( secondChoosedCard.current && firstChoosedCard.current.functionName !== secondChoosedCard.current.functionName) {
       setTimeout(() => {
