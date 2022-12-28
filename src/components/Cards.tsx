@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef, useState, useEffect } from "react";
 import Backcard from "./Backcard";
 import Frontcard from "./Frontcard";
 import { CardData, generateSortedCards } from "../untils/cardsData";
 import { GameContext } from "../common/GameContext";
 
-
 export default function Cards() {
+  const { setIsGameFinished } = useContext(GameContext);
   const firstChoosedCard = useRef<CardData | null>(null);
   const secondChoosedCard = useRef<CardData | null>(null);
   const [disableClick, setDisableClick] = useState(false);
@@ -14,12 +14,16 @@ export default function Cards() {
     return generateSortedCards();
   });
   const {moves, setMoves} = useContext(GameContext)
+  const correctCards = useRef<number>(0)
+ if(correctCards.current === cards.length/2){
+  setIsGameFinished(true)
+ }
 
 
   return (
     <>
-      {cards.map((item) => (
-        <CardWrappler onClick={() => !disableClick && chooseCard(item)}>
+      {cards.map((item, index) => (
+        <CardWrappler key={index} onClick={() => !disableClick && chooseCard(item)}>
           <Card
             functionName={item.functionName}
             imgSrc={item.imgSrc}
@@ -53,6 +57,7 @@ export default function Cards() {
       setTimeout(() => {
         firstChoosedCard.current = null;
         secondChoosedCard.current = null;
+        correctCards.current = correctCards.current + 1
         return setDisableClick(false);
       }, 1800);
     }

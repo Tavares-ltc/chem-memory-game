@@ -3,23 +3,32 @@ import { useNavigate } from "react-router-dom"
 
 type ButtonData = {
     text: string,
-    navigatePath: string
+    navigatePath: string,
+    width?: string,
+    onClick?: () => void
 }
-export default function Button({text, navigatePath}: ButtonData) {
+export default function Button({text, navigatePath, width = '60%', onClick = undefined}: ButtonData) {
     const navigate = useNavigate();
     return(
-        <ButtonWrappler>
-            <button onClick={()=> {navigate(navigatePath)}}><h1>{text}</h1></button>
+        <ButtonWrappler width={width}>
+            <button onClick={()=> {
+                navigate(navigatePath)
+                if(onClick){
+                    onClick()
+                }
+                }}><h1>{text}</h1></button>
         </ButtonWrappler>
     )
 }
-
-const ButtonWrappler = styled.div`
+interface Props {
+    width: string;
+}
+const ButtonWrappler = styled.div<Props>`
 
 display: flex;
 justify-content: space-around;
  button{
-    width: 60%;
+    width: ${(Props)=> Props.width };
     color: white;
     font-size: 18px;
     font-family: 'Fredoka One', cursive;

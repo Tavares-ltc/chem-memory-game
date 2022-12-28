@@ -2,14 +2,14 @@ import { useContext } from "react";
 import styled from "styled-components";
 import Timer from "./Timer";
 import { MovesPlaceholder } from "./MovesPlaceholder";
+import { ReturnButton } from "../common/ReturnButton";
 
 export default function GameHeader() {
-
   return (
     <Header>
-        <MovesPlaceholder/>
+      <MovesPlaceholder />
       <Timer />
-      <img />
+      <ReturnButton navigatePath="/"/>
     </Header>
   );
 }
@@ -25,7 +25,5 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
- img {
-  width: 110px;
- }
 `;
+

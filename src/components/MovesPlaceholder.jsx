@@ -11,11 +11,12 @@ export function MovesPlaceholder() {
   );
 }
 const PlaceholderWrappler = styled.div`
-margin-left: 10px;
-width: 110px;
+margin-left: 40px;
+width: 70px;
       h1 {
-    font-size: 15px;
+    font-size: 20px;
     color: white;
+    text-align: center;
   }
 
 `
