@@ -1,46 +1,119 @@
+import { useContext } from "react";
+import { GameContext } from "../common/GameContext";
+
 export type CardData = {
-    imgSrc: string;
-    functionName: string;
-    flipped: boolean;
-    id: number;
-}
+  imgSrc: string;
+  text: string;
+  functionName: string;
+  flipped: boolean;
+  id: number;
+};
 
-export function generateSortedCards() {
-    let  cards = [
-        {
-          imgSrc: "/organic-groups/Acido-carboxilico.png",
-          functionName: "Ácido carboxílico", flipped: false
-        },
-        { imgSrc: "/organic-groups/Alcano.png", functionName: "Alcano", flipped: false },
-        { imgSrc: "/organic-groups/Alceno.png", functionName: "Alceno", flipped: false },
-        { imgSrc: "/organic-groups/Alcino.png", functionName: "Alcino", flipped: false },
-        { imgSrc: "/organic-groups/Alcool.png", functionName: "Álcool", flipped: false },
-        { imgSrc: "/organic-groups/Aldeido.png", functionName: "Aldeído", flipped: false },
-        { imgSrc: "/organic-groups/Amida.png", functionName: "Amida", flipped: false },
-        { imgSrc: "/organic-groups/Amina.png", functionName: "Amina", flipped: false },
-        { imgSrc: "/organic-groups/Anel-benzeno.png", functionName: "Fenil", flipped: false },
-        { imgSrc: "/organic-groups/Cetona.png", functionName: "Cetona", flipped: false },
-        { imgSrc: "/organic-groups/Ester.png", functionName: "Éster", flipped: false },
-        { imgSrc: "/organic-groups/Eter.png", functionName: "Éter", flipped: false },
-      ];
-
-      const sortedCards = random(cards)
-      const duplicatedCards = sortedCards.concat(sortedCards)
-      return createId(duplicatedCards)
+export function generateSortedCards(difficulty: string) {
+  console.log(difficulty)
+  let cards = [
+    {
+      imgSrc: "/organic-groups/Acido-carboxilico.png",
+      text: "Ácido carboxílico",
+      functionName: "Ácido carboxílico",
+      flipped: false,
+    },
+    {
+      imgSrc: "/organic-groups/Alcano.png",
+      text: "Alcano",
+      functionName: "Alcano",
+      flipped: false,
+    },
+    {
+      imgSrc: "/organic-groups/Alceno.png",
+      text: "Alceno",
+      functionName: "Alceno",
+      flipped: false,
+    },
+    {
+      imgSrc: "/organic-groups/Alcino.png",
+      text: "Alcino",
+      functionName: "Alcino",
+      flipped: false,
+    },
+    {
+      imgSrc: "/organic-groups/Alcool.png",
+      text: "Álcool",
+      functionName: "Álcool",
+      flipped: false,
+    },
+    {
+      imgSrc: "/organic-groups/Aldeido.png",
+      text: "Aldeído",
+      functionName: "Aldeído",
+      flipped: false,
+    },
+    {
+      imgSrc: "/organic-groups/Amida.png",
+      text: "Amida",
+      functionName: "Amida",
+      flipped: false,
+    },
+    {
+      imgSrc: "/organic-groups/Amina.png",
+      text: "Amina",
+      functionName: "Amina",
+      flipped: false,
+    },
+    {
+      imgSrc: "/organic-groups/Anel-benzeno.png",
+      text: "Fenil",
+      functionName: "Fenil",
+      flipped: false,
+    },
+    {
+      imgSrc: "/organic-groups/Cetona.png",
+      text: "Cetona",
+      functionName: "Cetona",
+      flipped: false,
+    },
+    {
+      imgSrc: "/organic-groups/Ester.png",
+      text: "Éster",
+      functionName: "Éster",
+      flipped: false,
+    },
+    {
+      imgSrc: "/organic-groups/Eter.png",
+      text: "Éter",
+      functionName: "Éter",
+      flipped: false,
+    },
+  ];
+  if (difficulty === "hard") {
+    const sortedCards = random(cards);
+    const cardsWithoutImage = filterImage(sortedCards);
+    const cardsWithouText = filterText(sortedCards)
+    const duplicatedCards = cardsWithouText.concat(cardsWithoutImage);
+    return createId(duplicatedCards);
+  }
+  const sortedCards = random(cards);
+  const duplicatedCards = sortedCards.concat(sortedCards);
+  return createId(duplicatedCards);
 }
-function random (arr: Omit<CardData, "id">[]) {
-  const resp: any = []
-  let hashtable: any = {}
-  while(resp.length < 6) {
-    const number = Math.floor(Math.random() * arr.length)
-    if(!hashtable[number]){
+function random(arr: Omit<CardData, "id">[]) {
+  const resp: any = [];
+  let hashtable: any = {};
+  while (resp.length < 6) {
+    const number = Math.floor(Math.random() * arr.length);
+    if (!hashtable[number]) {
       hashtable[number] = true;
-      resp.push(arr[number])
+      resp.push(arr[number]);
     }
   }
-  return resp
+  return resp;
 }
-
-function createId(array: Omit<CardData, "id">[]) : CardData[]  {
-return array.map((object, index)=> ({...object, id: index}) )
+function filterImage(array: Omit<CardData, "id">[]) {
+  return array.map( card =>  ({ ...card, imgSrc: "detective.png" }));
+}
+function filterText(array: Omit<CardData, "id">[]){
+  return array.map( card =>  ({ ...card, text: '?' }));
+}
+function createId(array: Omit<CardData, "id">[]): CardData[] {
+  return array.map((object, index) => ({ ...object, id: index }));
 }

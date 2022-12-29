@@ -11,9 +11,8 @@ export default function Timer() {
       setTimeout(() => {
         setTimer({...timer, sd: timer.sd + 1});
         if(timer.sd === 9) setTimer({...timer, s: timer.s + 1, sd: 0})
-        if(timer.s === 6) setTimer({...timer, md: timer.md +1, s: 0})
+        if(timer.s === 5 && timer.sd === 9) setTimer({...timer, md: timer.md +1, s: 0, sd: 0})
         if(timer.md === 9) setTimer({...timer, md: 0, m: timer.m +1})
-        
       }, 1000);
     }
     return (

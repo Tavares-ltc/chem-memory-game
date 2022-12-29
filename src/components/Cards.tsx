@@ -6,18 +6,30 @@ import { CardData, generateSortedCards } from "../untils/cardsData";
 import { GameContext } from "../common/GameContext";
 
 export default function Cards() {
-  const { setIsGameFinished } = useContext(GameContext);
+  const { setIsGameFinished, difficulty, moves, setMoves } = useContext(GameContext);
   const firstChoosedCard = useRef<CardData | null>(null);
   const secondChoosedCard = useRef<CardData | null>(null);
   const [disableClick, setDisableClick] = useState(false);
   const [cards, setCards] = useState(() => {
-    return generateSortedCards();
+    let storageDifficulty
+    let generetedCards
+    if (localStorage.getItem("gameData")) {
+      const gameData = localStorage.getItem("gameData");
+      const gameStorage = gameData && JSON.parse(gameData);
+      storageDifficulty = gameStorage.difficulty
+      generetedCards = generateSortedCards(storageDifficulty)
+    } else {
+      generetedCards = generateSortedCards(difficulty)
+    }
+    return generetedCards;
   });
-  const {moves, setMoves} = useContext(GameContext)
   const correctCards = useRef<number>(0)
  if(correctCards.current === cards.length/2){
   setIsGameFinished(true)
  }
+ useEffect(()=>{
+  setMoves(0)
+ }, [])
 
 
   return (
@@ -28,6 +40,7 @@ export default function Cards() {
             functionName={item.functionName}
             imgSrc={item.imgSrc}
             clicked={item.flipped}
+            text={item.text}
           />
         </CardWrappler>
       ))}
@@ -90,15 +103,17 @@ function Card({
   functionName,
   imgSrc,
   clicked,
+  text,
 }: {
   functionName: string;
   imgSrc: string;
   clicked: boolean;
+  text: string;
 }) {
   return (
     <>
       <Gamecard clicked={clicked}>
-        <Frontcard imgSrc={imgSrc} functionName={functionName} />
+        <Frontcard imgSrc={imgSrc} functionName={functionName} text={text} />
         <Backcard />
       </Gamecard>
     </>

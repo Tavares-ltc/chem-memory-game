@@ -1,9 +1,10 @@
 import styled from "styled-components";
 type CardContent = {
     imgSrc: string,
-    functionName: string
+    functionName: string,
+    text: string
 }
-export default function Card({imgSrc, functionName}: CardContent){
+export default function Card({imgSrc, functionName, text}: CardContent){
     return(
         <CardWrappler>
             <img src="card-template.png"></img>
@@ -12,7 +13,7 @@ export default function Card({imgSrc, functionName}: CardContent){
         <img src={imgSrc} alt="organic function" />    
         </ImageStyle>
         <TextStyle>
-        <h1>{functionName}</h1>        
+        <h1>{text}</h1>        
         </TextStyle>
             </ContentWrappler>
         </CardWrappler>

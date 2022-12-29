@@ -3,7 +3,7 @@ import styled from "styled-components";
 export default function Header() {
 return (
     <HeaderStyle>
-    <h1>Memorizando Funções orgânicas</h1>
+    <h1>Memorizando Funções Orgânicas</h1>
     </HeaderStyle>
 )
 }

@@ -9,7 +9,7 @@ export default function Menu() {
       <Header></Header>
       <>
         <Button text="Jogar" navigatePath="/game" />
-        <Button text="Opções" navigatePath="/" />
+        <Button text="Opções" navigatePath="/options" />
         <Button text="Créditos" navigatePath="/" />
       </>
     </MenuWrappler>
@@ -38,6 +38,13 @@ const MenuWrappler = styled.div`
     }
     Button {
       margin-bottom: 20px;
+      font-size: 10px;
+    }
+    
+  }
+  @media screen and (max-width: 500px) {
+    button {
+      font-size: 10px;
     }
   }
 `;

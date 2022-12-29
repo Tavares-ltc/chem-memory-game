@@ -7,9 +7,9 @@ export function GameFineshedModal() {
   const { moves, time, isGameFinished } = useContext(GameContext);
   const ModalRef = useRef(null);
   const clientViewport = document.documentElement.clientWidth;
-  const buttonWidth = clientViewport > 500? "22vw" : "28vw"
+  const buttonWidth = clientViewport > 500 ? "22vw" : "28vw";
   if (!isGameFinished) return <></>;
-  
+
   function viewModal() {
     if (ModalRef.current !== null) {
       window.onscroll = function () {
@@ -28,7 +28,9 @@ export function GameFineshedModal() {
       {viewModal()}
       <GrayBackground />
       <FinishedModalWrappler ref={ModalRef}>
-        <h1>Você venceu!</h1>
+        <Title>
+          <h1>Você venceu!</h1>
+        </Title>
         <ContentWrappler>
           <LeftContent>
             <h1>Jogadas</h1>
@@ -70,7 +72,6 @@ const FinishedModalWrappler = styled.div`
   h1 {
     text-align: center;
     font-size: 3em;
-    color: #05eb05;
   }
   @media screen and (max-height: 500px) {
     height: 80vh;
@@ -86,6 +87,12 @@ const FinishedModalWrappler = styled.div`
       font-size: 2em;
     }
   }
+`;
+const Title = styled.div`
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  color: #fc2fff;
+  font-family: "Skranji", cursive;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 `;
 
 const ContentWrappler = styled.div`

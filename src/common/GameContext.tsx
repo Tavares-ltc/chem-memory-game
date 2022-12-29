@@ -7,8 +7,13 @@ export interface GlobalContent {
   setTime: React.Dispatch<React.SetStateAction<string>>,
   isGameFinished: boolean,
   setIsGameFinished: React.Dispatch<React.SetStateAction<boolean>>,
+  difficulty: string,
+  setDifficulty: React.Dispatch<React.SetStateAction<string>>,
+  numberOfCards: number,
+  setNumberOfCards: React.Dispatch<React.SetStateAction<number>>,
+  language: string,
+  setLanguage: React.Dispatch<React.SetStateAction<string>>,
 }
-
 export const GameContext = createContext<GlobalContent>({
   moves: 0,
   setMoves: ()=>{},
@@ -16,4 +21,10 @@ export const GameContext = createContext<GlobalContent>({
   setTime: ()=>{},
   isGameFinished: false,
   setIsGameFinished: ()=>{},
+  difficulty: 'normal',
+  setDifficulty: ()=>{},
+  numberOfCards: 12,
+  setNumberOfCards: ()=>{},
+  language: 'portuguese',
+  setLanguage: ()=>{},
 });

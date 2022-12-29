@@ -34,7 +34,6 @@ const ReturnButtonWrappler = styled.div`
   svg {
     width: 35px;
     color: white;
-    fill: white;
     cursor: pointer;
   }
 `;
