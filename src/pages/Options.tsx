@@ -48,8 +48,14 @@ export function Options() {
           <Option>
             <h1>Número de cartas</h1>
             <ButtonWrappler>
-              <Button text="8" selected={numberOfCards === 8} />
-              <Button text="12" selected={numberOfCards === 12} />
+              <Button text="8" selected={numberOfCards === 8} onClick={() => {
+                setNumberOfCards(8)
+                writeLocalStorage({ numberOfCards: 8 })
+              }} />
+              <Button text="12" selected={numberOfCards === 12} onClick={() => {
+                setNumberOfCards(12)
+                writeLocalStorage({ numberOfCards: 12 })
+              }} />
             </ButtonWrappler>
           </Option>
           <Option>

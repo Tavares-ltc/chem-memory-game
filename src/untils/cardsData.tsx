@@ -1,5 +1,3 @@
-import { useContext } from "react";
-import { GameContext } from "../common/GameContext";
 
 export type CardData = {
   imgSrc: string;
@@ -9,7 +7,7 @@ export type CardData = {
   id: number;
 };
 
-export function generateSortedCards(difficulty: string) {
+export function generateSortedCards(difficulty: string, numberOfCards: number) {
   console.log(difficulty)
   let cards = [
     {
@@ -86,20 +84,35 @@ export function generateSortedCards(difficulty: string) {
     },
   ];
   if (difficulty === "hard") {
-    const sortedCards = random(cards);
+    const sortedCards = random(cards, numberOfCards);
     const cardsWithoutImage = filterImage(sortedCards);
     const cardsWithouText = filterText(sortedCards)
     const duplicatedCards = cardsWithouText.concat(cardsWithoutImage);
-    return createId(duplicatedCards);
+    const sortedDuplicatedCards = sort(duplicatedCards, numberOfCards)
+    return createId(sortedDuplicatedCards);
   }
-  const sortedCards = random(cards);
+  const sortedCards = random(cards, numberOfCards);
   const duplicatedCards = sortedCards.concat(sortedCards);
-  return createId(duplicatedCards);
+  const sortedDuplicatedCards = sort(duplicatedCards, numberOfCards)
+  return createId(sortedDuplicatedCards);
 }
-function random(arr: Omit<CardData, "id">[]) {
+function random(arr: Omit<CardData, "id">[], numberOfCards: number) {
+  const quantity = numberOfCards/2
   const resp: any = [];
   let hashtable: any = {};
-  while (resp.length < 6) {
+  while (resp.length < quantity) {
+    const number = Math.floor(Math.random() * arr.length);
+    if (!hashtable[number]) {
+      hashtable[number] = true;
+      resp.push(arr[number]);
+    }
+  }
+  return resp;
+}
+function sort(arr: Omit<CardData, "id">[], quantity: number){
+  const resp: any = [];
+  let hashtable: any = {};
+  while (resp.length < quantity) {
     const number = Math.floor(Math.random() * arr.length);
     if (!hashtable[number]) {
       hashtable[number] = true;

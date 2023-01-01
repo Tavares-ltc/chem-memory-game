@@ -6,36 +6,48 @@ import { CardData, generateSortedCards } from "../untils/cardsData";
 import { GameContext } from "../common/GameContext";
 
 export default function Cards() {
-  const { setIsGameFinished, difficulty, moves, setMoves } = useContext(GameContext);
+  const { setIsGameFinished, difficulty, moves, setMoves, numberOfCards } =
+    useContext(GameContext);
   const firstChoosedCard = useRef<CardData | null>(null);
   const secondChoosedCard = useRef<CardData | null>(null);
   const [disableClick, setDisableClick] = useState(false);
   const [cards, setCards] = useState(() => {
-    let storageDifficulty
-    let generetedCards
+    let generetedCards;
     if (localStorage.getItem("gameData")) {
       const gameData = localStorage.getItem("gameData");
       const gameStorage = gameData && JSON.parse(gameData);
-      storageDifficulty = gameStorage.difficulty
-      generetedCards = generateSortedCards(storageDifficulty)
+      if (gameStorage.difficulty && gameStorage.numberOfCards) {
+        return generateSortedCards(
+          gameStorage.difficulty,
+          gameStorage.numberOfCards
+        );
+      }
+      if (gameStorage.difficulty) {
+        return generateSortedCards(gameStorage.difficulty, numberOfCards);
+      }
+      if (gameStorage.numberOfCards) {
+        return generateSortedCards(difficulty, gameStorage.numberOfCards);
+      }
+      return generateSortedCards(difficulty, numberOfCards);
     } else {
-      generetedCards = generateSortedCards(difficulty)
+      return generateSortedCards(difficulty, numberOfCards);
     }
-    return generetedCards;
   });
-  const correctCards = useRef<number>(0)
- if(correctCards.current === cards.length/2){
-  setIsGameFinished(true)
- }
- useEffect(()=>{
-  setMoves(0)
- }, [])
-
+  const correctCards = useRef<number>(0);
+  if (correctCards.current === cards.length / 2) {
+    setIsGameFinished(true);
+  }
+  useEffect(() => {
+    setMoves(0);
+  }, []);
 
   return (
     <>
       {cards.map((item, index) => (
-        <CardWrappler key={index} onClick={() => !disableClick && chooseCard(item)}>
+        <CardWrappler
+          key={index}
+          onClick={() => !disableClick && chooseCard(item)}
+        >
           <Card
             functionName={item.functionName}
             imgSrc={item.imgSrc}
@@ -50,50 +62,67 @@ export default function Cards() {
   function chooseCard(card: CardData) {
     if (!firstChoosedCard.current) {
       flipCard(card);
-      return firstChoosedCard.current = card;
+      return (firstChoosedCard.current = card);
     }
-    if(firstChoosedCard.current && secondChoosedCard.current === null && card.id !== firstChoosedCard.current.id) {
+    if (
+      firstChoosedCard.current &&
+      secondChoosedCard.current === null &&
+      card.id !== firstChoosedCard.current.id
+    ) {
       setDisableClick(true);
       flipCard(card);
-      secondChoosedCard.current = card
-      setMoves(moves + 1)
+      secondChoosedCard.current = card;
+      setMoves(moves + 1);
     }
-    if ( secondChoosedCard.current && firstChoosedCard.current.functionName !== secondChoosedCard.current.functionName) {
+    if (
+      secondChoosedCard.current &&
+      firstChoosedCard.current.functionName !==
+        secondChoosedCard.current.functionName
+    ) {
       setTimeout(() => {
         unflipCards();
         firstChoosedCard.current = null;
         secondChoosedCard.current = null;
         return setDisableClick(false);
       }, 1800);
-    } 
-    if ( secondChoosedCard.current && firstChoosedCard.current.functionName === secondChoosedCard.current.functionName){
+    }
+    if (
+      secondChoosedCard.current &&
+      firstChoosedCard.current.functionName ===
+        secondChoosedCard.current.functionName
+    ) {
       setTimeout(() => {
         firstChoosedCard.current = null;
         secondChoosedCard.current = null;
-        correctCards.current = correctCards.current + 1
+        correctCards.current = correctCards.current + 1;
         return setDisableClick(false);
       }, 1800);
     }
   }
 
   function flipCard(cardClicked: CardData | null) {
-    if(!cardClicked){
+    if (!cardClicked) {
       return;
     }
     const newCards: CardData[] = cards.map((card) => {
       if (card.id !== cardClicked.id) {
         return card;
       }
-      return ({...card, flipped: true});
+      return { ...card, flipped: true };
     });
     setCards(newCards);
   }
   function unflipCards() {
     const newCards: CardData[] = cards.map((card) => {
-      if (firstChoosedCard.current && secondChoosedCard.current && card.id !== firstChoosedCard.current.id && card.id !== secondChoosedCard.current.id) {
+      if (
+        firstChoosedCard.current &&
+        secondChoosedCard.current &&
+        card.id !== firstChoosedCard.current.id &&
+        card.id !== secondChoosedCard.current.id
+      ) {
         return card;
       }
-      return ({...card, flipped: false});
+      return { ...card, flipped: false };
     });
     setCards(newCards);
   }
@@ -126,10 +155,10 @@ const CardWrappler = styled.div`
   div {
     backface-visibility: hidden;
   }
-  @media screen and (min-width: 1000px ){
-	width: 190px;
-    height:265px;
-}
+  @media screen and (min-width: 1000px) {
+    width: 190px;
+    height: 265px;
+  }
 `;
 interface Props {
   clicked: boolean;
