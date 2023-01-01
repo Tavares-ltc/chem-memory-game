@@ -2,7 +2,13 @@ import styled from "styled-components";
 import GameHeader from "../components/GameHeader";
 import Cards from "../components/Cards";
 import { GameFineshedModal } from "../components/GameFinishedModal";
+import { useContext, useEffect } from "react";
+import { GameContext } from "../common/GameContext";
 export default function Game() {
+  const { setIsGameFinished } = useContext(GameContext);
+  useEffect(()=> {
+    setIsGameFinished(false)
+  }, [])
   return (
     <Background>
       <GameHeader />

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useRef } from "react";
 import styled from "styled-components";
 import Button from "../common/Button";
 import { GameContext } from "../common/GameContext";
@@ -9,6 +9,8 @@ export function GameFineshedModal() {
   const clientViewport = document.documentElement.clientWidth;
   const buttonWidth = clientViewport > 500 ? "22vw" : "28vw";
   if (!isGameFinished) return <></>;
+
+ 
 
   function viewModal() {
     if (ModalRef.current !== null) {
