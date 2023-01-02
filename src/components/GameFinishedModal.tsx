@@ -1,47 +1,70 @@
-import { useContext, useRef } from "react";
+import { useContext, useRef, useState } from "react";
 import styled from "styled-components";
 import Button from "../common/Button";
 import { GameContext } from "../common/GameContext";
+import { writeLocalStorage } from "../untils/writeLocalStorage";
 
 export function GameFineshedModal() {
   const { moves, time, isGameFinished } = useContext(GameContext);
-  const ModalRef = useRef(null);
+  const [lastRecord, setLastRecord] = useState(() => {
+    const movesRecord = localStorage.getItem("movesRecord");
+    const timeRecord = localStorage.getItem("timeRecord");
+    const record: { moves: number | null; time: string | null } = {
+      moves: null,
+      time: null,
+    };
+    if (movesRecord) {
+      record.moves = JSON.parse(movesRecord);
+    }
+    if (timeRecord) {
+      record.time = JSON.parse(timeRecord);
+    }
+    return record;
+  });
   const clientViewport = document.documentElement.clientWidth;
   const buttonWidth = clientViewport > 500 ? "22vw" : "28vw";
   if (!isGameFinished) return <></>;
 
- 
-
-  function viewModal() {
-    if (ModalRef.current !== null) {
-      window.onscroll = function () {
-        // @ts-ignore: Object is possibly 'null'.
-        ModalRef.current.scrollIntoView({
-          behavior: "auto",
-          block: "center",
-          inline: "center",
-        });
-      };
+  function saveRecord() {
+    if (!lastRecord.moves || lastRecord.moves > moves) {
+      localStorage.setItem("movesRecord", JSON.stringify(moves));
+      setLastRecord({...lastRecord, moves: moves})
+    }
+    if (!lastRecord.time || lastRecord.time > time) {
+      localStorage.setItem("timeRecord", JSON.stringify(time));
+      setLastRecord({...lastRecord, time: time})
     }
   }
-
   return (
     <>
-      {viewModal()}
+    {saveRecord()}
       <GrayBackground />
-      <FinishedModalWrappler ref={ModalRef}>
+      <FinishedModalWrappler>
         <Title>
           <h1>Você venceu!</h1>
         </Title>
         <ContentWrappler>
-          <LeftContent>
-            <h1>Jogadas</h1>
-            <h1>Tempo</h1>
-          </LeftContent>
-          <RightContent>
-            <h1>{moves}</h1>
-            <h1>{time}</h1>
-          </RightContent>
+          <SidesWrappler>
+            <LeftContent>
+              <h1>Jogadas</h1>
+              <h1>Tempo</h1>
+            </LeftContent>
+            <RightContent>
+              <h1>{moves}</h1>
+              <h1>{time}</h1>
+            </RightContent>
+          </SidesWrappler>
+          {(!lastRecord.moves || !lastRecord.time || lastRecord.time < time || lastRecord.moves < moves) ? <h2>Novos recordes!</h2> : <h2>Seus recordes:</h2>}
+          <SidesWrappler>
+            <LeftContent>
+              <h1>Jogadas</h1>
+              <h1>Tempo</h1>
+            </LeftContent>
+            <RightContent>
+              <h1>{lastRecord.moves}</h1>
+              <h1>{lastRecord.time}</h1>
+            </RightContent>
+          </SidesWrappler>
         </ContentWrappler>
         <ButtonsWrappler>
           <Button text="Menu" navigatePath="/" width={buttonWidth} />
@@ -64,7 +87,10 @@ const FinishedModalWrappler = styled.div`
   height: 70vh;
   border-radius: 5vh;
   background-color: #279dff;
-  position: absolute;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   z-index: 3;
   box-shadow: 8px 5px 5px black;
   display: flex;
@@ -102,13 +128,22 @@ const ContentWrappler = styled.div`
   height: 60%;
   background-color: white;
   border-radius: 1em;
-  display: flex;
+  overflow-y: scroll;
   h1 {
     color: black;
     font-size: 25px;
   }
+  h2 {
+    color: #25ce0b;
+    text-align: center;
+    font-size: 30px;
+  }
   box-sizing: border-box;
   padding: 10px;
+`;
+const SidesWrappler = styled.div`
+  width: 100%;
+  display: flex;
 `;
 const LeftContent = styled.div`
   width: 50%;
@@ -142,7 +177,8 @@ const GrayBackground = styled.div`
   width: 100vw;
   height: 200vh;
   background-color: #0101015d;
-  position: absolute;
+  position: fixed;
   z-index: 2;
+  align-items: center;
   overflow: hidden;
 `;

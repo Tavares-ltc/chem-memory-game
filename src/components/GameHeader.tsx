@@ -18,8 +18,8 @@ const Header = styled.div`
   width: 100vw;
   height: 50px;
   background-color: #279dff;
-  z-index: 2;
-  position: fixed;
+  z-index: 10;
+  position: sticky;
   left: 0;
   top: 0;
   display: flex;

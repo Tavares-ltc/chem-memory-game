@@ -144,7 +144,7 @@ const ModalWrappler = styled.div`
   border-radius: 5vh;
   background-color: #279dff;
   width: 40vw;
-  height: 98vh;
+  height: 96vh;
   z-index: 1;
   box-shadow: 8px 5px 5px black;
   display: flex;
